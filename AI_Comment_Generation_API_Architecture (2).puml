@@ -1,0 +1,22 @@
+@startuml
+
+title AI Comment Generation API
+
+actor User
+
+rectangle "FastAPI" as API
+rectangle "Input Validation" as VALID
+rectangle "Prompt Builder" as PROMPT
+rectangle "Gemini LLM" as LLM
+database "SQLite Database" as DB
+
+User --> API : Post + Platform
+API --> VALID : Validate
+VALID --> PROMPT : Valid input
+PROMPT --> LLM : Prompt
+LLM --> API : Generated comment
+API --> DB : Save comment
+DB --> API : Comment history
+API --> User : JSON response
+
+@enduml
