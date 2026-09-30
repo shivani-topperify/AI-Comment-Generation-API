@@ -1,1066 +1,758 @@
-\# AI Comment Generation API
+# AI Comment Generation API
 
+A FastAPI-based Generative AI application that generates natural, context-aware social media comment drafts using Google's Gemini API and stores generated comments in a SQLite database.
 
+---
 
-An AI-powered REST API that generates natural, relevant social media comment drafts based on a user's post.
+## 1. Project Overview
 
+The **AI Comment Generation API** is a REST API designed to automate the process of drafting relevant and natural comments for social media posts.
 
+The application accepts information about a social media post, including the platform, community, title, and content. It uses Google's Gemini API to generate a suitable comment based on the provided context.
 
-The system accepts a social media platform, post title, post content, and community/context. It uses Google's Gemini model to generate a suitable comment and stores the generated comment in a SQLite database.
+Generated comments are stored in a SQLite database using SQLAlchemy and can be retrieved or deleted through API endpoints.
 
+The API is documented and tested using FastAPI's built-in Swagger UI.
 
+---
 
-\---
+## 2. Problem Statement
 
+Writing relevant and natural comments for social media posts can be time-consuming.
 
+Users may understand a topic but still find it difficult to formulate a response that:
 
-\## 1. Project Overview
+* Matches the platform
+* Matches the conversation
+* Adds useful information
+* Sounds natural
+* Does not sound like an advertisement
 
+This project aims to automate the comment drafting process using Generative AI while preserving the context of the original social media post.
 
+---
 
-People often come across posts on platforms such as Reddit or LinkedIn and want to respond but do not know what to write.
+## 3. Objectives
 
+The main objectives of the project are to:
 
+1. Accept a social media post as input.
+2. Understand the platform and community context.
+3. Generate a relevant comment using Generative AI.
+4. Return the generated comment through a REST API.
+5. Store generated comments in a database.
+6. Retrieve previously generated comments.
+7. Retrieve an individual comment using its ID.
+8. Delete stored comments.
+9. Validate incomplete or incorrect requests.
+10. Handle requests for non-existing comments appropriately.
 
-This project provides an AI-based solution that generates a natural and useful comment based on the context of the original post.
+---
 
+## 4. Features
 
+### AI Comment Generation
 
-\### Basic workflow
+Generates natural-language comment drafts using Google's Gemini API.
 
+### Platform Awareness
 
+The API accepts a platform such as:
 
-User Post
+* Reddit
+* LinkedIn
+* Other supported social platforms
 
-↓
+The platform information is included in the prompt so that the generated response can be appropriate for the requested context.
 
-FastAPI
+### Community Context
 
-↓
+The API accepts a community or context such as:
 
-Prompt Engineering
+* UPSC
+* careers
+* technology
+* programming
 
-↓
+### Context-Aware Prompt Engineering
 
-Gemini AI
+The application creates a structured prompt containing:
 
-↓
+* Platform
+* Community
+* Post title
+* Post content
+* Comment-writing instructions
 
-Generated Comment
+### Database Storage
 
-↓
+Generated comments are stored using:
 
-SQLite Database
+* SQLite
+* SQLAlchemy
 
+### Comment History
 
+Previously generated comments can be retrieved through the API.
 
-The generated comment can then be copied and posted by the user on the respective social media platform.
+### Individual Comment Retrieval
 
+A specific stored comment can be retrieved using its database ID.
 
-
-\---
-
-
-
-\## 2. Problem Statement
-
-
-
-Writing relevant and natural comments for social media posts can take time.
-
-
-
-Users may understand a topic but struggle to formulate a suitable response that:
-
-
-
-\- Matches the platform
-
-\- Matches the conversation
-
-\- Adds useful information
-
-\- Sounds natural
-
-\- Does not sound like an advertisement
-
-
-
-This project aims to automate the comment drafting process using Generative AI.
-
-
-
-\---
-
-
-
-\## 3. Objective
-
-
-
-The main objective is to develop an API that can:
-
-
-
-1\. Accept a social media post as input.
-
-2\. Understand the platform and community context.
-
-3\. Generate a relevant comment using Generative AI.
-
-4\. Return the generated comment through an API response.
-
-5\. Store generated comments in a database.
-
-6\. Allow users to retrieve previous comments.
-
-7\. Allow users to delete stored comments.
-
-8\. Validate incorrect or incomplete requests.
-
-
-
-\---
-
-
-
-\## 4. Features
-
-
-
-\### AI Comment Generation
-
-
-
-Generates natural comments using Google's Gemini API.
-
-
-
-\### Platform Awareness
-
-
-
-The API accepts different platforms such as:
-
-
-
-\- Reddit
-
-\- LinkedIn
-
-\- Other social platforms
-
-
-
-The generated response is instructed to match the platform's conversational style.
-
-
-
-\### Community Context
-
-
-
-The API can accept a community such as:
-
-
-
-```text
-
-UPSC
-
-careers
-
-technology
-
-programming
-
-
-
-Prompt Engineering
-
-
-
-A structured prompt is created using:
-
-
-
-Platform
-
-Community
-
-Post title
-
-Post content
-
-Comment-writing rules
-
-Database Storage
-
-
-
-Generated comments are stored using SQLite and SQLAlchemy.
-
-
-
-Comment History
-
-
-
-Previously generated comments can be retrieved using the API.
-
-
-
-Delete Comments
-
-
+### Comment Deletion
 
 Stored comments can be deleted using their ID.
 
+### Input Validation
 
+FastAPI and Pydantic validate required request fields.
 
-Input Validation
+For example, if `post_content` is missing, the API returns a `422 Unprocessable Content` response.
 
+### Error Handling
 
+The API returns a `404 Not Found` response when a requested comment does not exist.
 
-FastAPI automatically validates required fields and returns a 422 response when required information is missing.
+---
 
+## 5. Technology Stack
 
+### Backend
 
-Error Handling
+* Python
+* FastAPI
+* Uvicorn
 
+### Generative AI
 
+* Google Gemini API
+* Google GenAI Python SDK
 
-The API returns appropriate errors when a requested comment does not exist.
+### Database
 
+* SQLite
+* SQLAlchemy
 
+### Validation
 
-5\. Technology Stack
+* Pydantic
 
-Backend
+### API Documentation and Testing
 
-Python
+* FastAPI Swagger UI
+* OpenAPI
 
-FastAPI
+### Development Tools
 
-Uvicorn
+* Visual Studio Code
+* Python Virtual Environment
+* Git
+* GitHub
 
-AI
+---
 
-Google Gemini API
+## 6. Project Structure
 
-Google GenAI Python SDK
-
-Database
-
-SQLite
-
-SQLAlchemy
-
-Validation
-
-Pydantic
-
-API Testing
-
-FastAPI Swagger UI
-
-OpenAPI
-
-Development
-
-Visual Studio Code
-
-Python Virtual Environment
-
-Git
-
-6\. Project Structure
-
+```text
 Reddit-Comment-API/
-
 │
-
 ├── app/
-
-│   ├── \_\_init\_\_.py
-
+│   ├── __init__.py
 │   ├── main.py
-
 │   ├── routes.py
-
 │   ├── schemas.py
-
 │   ├── prompts.py
-
 │   ├── llm.py
-
 │   ├── models.py
-
 │   └── database.py
-
 │
-
-├── .env
-
+├── comments.db
+├── .gitignore
 ├── requirements.txt
-
 ├── README.md
+└── AI_Comment_Generation_API_Architecture (2).puml
+```
 
-└── .venv/
+The `.env` file is used locally for the Gemini API key and is excluded from Git using `.gitignore`.
 
-File Responsibilities
+---
 
-main.py
+## 7. File Responsibilities
 
-
+### `main.py`
 
 Initializes the FastAPI application and registers the API routes.
 
+### `routes.py`
 
+Contains the API endpoints for:
 
-routes.py
+* Generating comments
+* Retrieving all comments
+* Retrieving an individual comment
+* Deleting comments
 
+### `schemas.py`
 
+Defines request and response structures using Pydantic.
 
-Contains the API endpoints.
+### `prompts.py`
 
+Contains the prompt-building logic used to provide structured instructions to the Gemini model.
 
+### `llm.py`
 
-schemas.py
+Handles communication with the Google Gemini API.
 
+### `models.py`
 
+Defines the SQLAlchemy database model for stored comments.
 
-Defines request and response data structures using Pydantic.
+### `database.py`
 
+Configures the SQLite database and SQLAlchemy database session.
 
+---
 
-prompts.py
+## 8. API Endpoints
 
+| Method | Endpoint                 | Description                      |
+| ------ | ------------------------ | -------------------------------- |
+| POST   | `/generate-comment`      | Generate and store an AI comment |
+| GET    | `/comments`              | Retrieve all stored comments     |
+| GET    | `/comments/{comment_id}` | Retrieve a specific comment      |
+| DELETE | `/comments/{comment_id}` | Delete a stored comment          |
+| GET    | `/`                      | Home endpoint                    |
 
+---
 
-Contains the prompt engineering logic used to instruct the Gemini model.
+## 9. Generate Comment
 
+### POST `/generate-comment`
 
+Generates an AI comment based on the supplied social media post.
 
-llm.py
+### Request
 
-
-
-Handles communication with the Gemini API.
-
-
-
-models.py
-
-
-
-Defines the database models.
-
-
-
-database.py
-
-
-
-Configures the SQLite database and SQLAlchemy session.
-
-
-
-7\. API Endpoints
-
-POST /generate-comment
-
-
-
-Generates a new AI comment.
-
-
-
-Request
-
+```json
 {
-
-&#x20; "platform": "reddit",
-
-&#x20; "post\_title": "How to prepare for UPSC?",
-
-&#x20; "post\_content": "What is the best strategy for starting UPSC preparation?",
-
-&#x20; "community": "UPSC"
-
+  "platform": "reddit",
+  "post_title": "How to stay consistent with UPSC preparation?",
+  "post_content": "I keep losing motivation while preparing. What should I do?",
+  "community": "UPSC"
 }
+```
 
-Response
+### Response
 
+```json
 {
-
-&#x20; "platform": "reddit",
-
-&#x20; "comment": "Honestly, the best way to start is by thoroughly reading the syllabus and analyzing the last few years of PYQs. It gives you a clear idea of what UPSC actually asks..."
-
+  "platform": "reddit",
+  "comment": "Honestly, stop relying on motivation. It’s a trap. UPSC is too long of a journey for motivation to last. You need to build discipline and routine instead."
 }
+```
 
-GET /comments
+The exact generated comment may vary because it is generated dynamically by Gemini.
 
+---
 
+## 10. Get All Comments
+
+### GET `/comments`
 
 Returns previously generated comments stored in the database.
 
+### Example Response
 
-
-Example response
-
-\[
-
-&#x20; {
-
-&#x20;   "id": 1,
-
-&#x20;   "platform": "reddit",
-
-&#x20;   "community": "UPSC",
-
-&#x20;   "post\_title": "UPSC preparation tips",
-
-&#x20;   "post\_content": "What is the best way to prepare for UPSC?",
-
-&#x20;   "generated\_comment": "Honestly, start with the syllabus and PYQs...",
-
-&#x20;   "created\_at": "2026-08-13T07:06:28"
-
-&#x20; }
-
+```json
+[
+  {
+    "id": 2,
+    "platform": "reddit",
+    "community": "UPSC",
+    "post_title": "How to prepare for UPSC?",
+    "post_content": "What is the best strategy for starting UPSC preparation?",
+    "generated_comment": "Honestly, the best way to start is by thoroughly reading the syllabus and analyzing the last few years of PYQs.",
+    "created_at": "2026-08-13T07:12:05.392297"
+  }
 ]
+```
 
-GET /comments/{comment\_id}
+---
 
+## 11. Get Individual Comment
 
+### GET `/comments/{comment_id}`
 
-Returns a specific generated comment using its ID.
+Retrieves a specific generated comment using its database ID.
 
+### Example
 
-
-Example
-
+```text
 GET /comments/2
+```
 
+### Successful Response
 
-
-If the comment exists, the API returns its stored details.
-
-
-
-If it does not exist:
-
-
-
+```json
 {
-
-&#x20; "detail": "Comment not found"
-
+  "platform": "reddit",
+  "community": "UPSC",
+  "post_content": "What is the best strategy for starting UPSC preparation?",
+  "created_at": "2026-08-13T07:12:05.392297",
+  "id": 2,
+  "post_title": "How to prepare for UPSC?",
+  "generated_comment": "Honestly, the best way to start is by thoroughly reading the syllabus and analyzing the last few years of PYQs."
 }
+```
 
-DELETE /comments/{comment\_id}
+### Comment Not Found
 
+If the requested ID does not exist:
 
+```json
+{
+  "detail": "Comment not found"
+}
+```
 
-Deletes a stored comment using its ID.
+---
 
+## 12. Delete Comment
 
+### DELETE `/comments/{comment_id}`
 
-Example
+Deletes a stored comment using its database ID.
 
+### Example
+
+```text
 DELETE /comments/2
+```
 
+### Successful Response
 
-
-If the comment does not exist:
-
-
-
+```json
 {
-
-&#x20; "detail": "Comment not found"
-
+  "message": "Comment deleted successfully",
+  "id": 2
 }
+```
 
-8\. API Documentation
+### Comment Not Found
 
+If the requested ID does not exist:
 
+```json
+{
+  "detail": "Comment not found"
+}
+```
 
-FastAPI automatically provides interactive Swagger documentation.
+---
 
+## 13. API Documentation
 
+FastAPI automatically provides interactive API documentation through Swagger UI.
 
-After starting the server, open:
+After starting the application, open:
 
-
-
+```text
 http://127.0.0.1:8000/docs
-
-
+```
 
 The OpenAPI specification is available at:
 
-
-
+```text
 http://127.0.0.1:8000/openapi.json
+```
 
+Swagger UI can be used to test the API endpoints without requiring a separate frontend application.
 
+---
 
-Swagger can be used to test all API endpoints without requiring a separate frontend.
+## 14. How to Run the Project
 
+### Step 1: Clone the Repository
 
+```bash
+git clone https://github.com/shivani-topperify/AI-Comment-Generation-API.git
+```
 
-9\. How to Run the Project
+### Step 2: Open the Project
 
-Step 1: Clone the project
+```bash
+cd AI-Comment-Generation-API
+```
 
-git clone <your-github-repository-url>
+### Step 3: Create a Virtual Environment
 
-Step 2: Open the project
-
-cd Reddit-Comment-API
-
-Step 3: Create a virtual environment
-
+```bash
 python -m venv .venv
+```
 
-Step 4: Activate the virtual environment
+### Step 4: Activate the Virtual Environment
 
+#### Windows
 
+```bash
+.venv\Scripts\activate
+```
 
-Windows:
+### Step 5: Install Dependencies
 
-
-
-.venv\\Scripts\\activate
-
-Step 5: Install dependencies
-
+```bash
 pip install -r requirements.txt
+```
 
-Step 6: Configure the Gemini API key
+### Step 6: Configure the Gemini API Key
 
+Create a `.env` file in the project root:
 
+```text
+GEMINI_API_KEY=your_api_key_here
+```
 
-Create a .env file:
+The `.env` file should remain local and must not be committed to GitHub.
 
+### Step 7: Start the API
 
-
-GEMINI\_API\_KEY=your\_api\_key\_here
-
-
-
-Do not commit the .env file to GitHub.
-
-
-
-Step 7: Start the server
-
-python -m uvicorn app.main:app --reload
-
-
+```bash
+python -m uvicorn app.main:app
+```
 
 The API will run at:
 
-
-
+```text
 http://127.0.0.1:8000
-
-
+```
 
 Swagger documentation:
 
-
-
+```text
 http://127.0.0.1:8000/docs
+```
 
-10\. Example Workflow
+---
 
+## 15. Example Workflow
 
+A typical workflow is:
 
-A user finds a post on Reddit:
+### Step 1 — User provides a social media post
 
-
-
-Title:
-
-How to stay consistent with UPSC preparation?
-
-
-
-Content:
-
-I keep losing motivation while preparing. What should I do?
-
-
-
-Community:
-
-UPSC
-
-
-
-The application sends this information to:
-
-
-
-POST /generate-comment
-
-
-
-The API creates a structured prompt.
-
-
-
-The prompt is sent to Gemini.
-
-
-
-Gemini generates a natural response.
-
-
-
-The generated response is returned to the user.
-
-
-
-The generated comment is also stored in SQLite.
-
-
-
-The user can then copy the comment and use it on the social media platform.
-
-
-
-11\. Prompt Engineering
-
-
-
-The application uses a structured prompt instead of sending the post directly to the AI model.
-
-
-
-The prompt contains:
-
-
-
-Platform
-
-Community
-
-Post title
-
-Post content
-
-
-
-The AI is also given rules such as:
-
-
-
-Write one natural comment.
-
-Do not sound like an advertisement.
-
-Do not mention that the response was generated by AI.
-
-Keep the comment concise.
-
-Match the platform's tone.
-
-Return only the comment.
-
-
-
-This helps produce comments that are more relevant to the original conversation.
-
-
-
-12\. Database
-
-
-
-The project uses SQLite for storing generated comments.
-
-
-
-Each stored comment contains information such as:
-
-
-
-ID
-
-Platform
-
-Community
-
-Post title
-
-Post content
-
-Generated comment
-
-Created time
-
-
-
-Example:
-
-
-
-{
-
-&#x20; "id": 3,
-
-&#x20; "platform": "linkedin",
-
-&#x20; "community": "careers",
-
-&#x20; "post\_title": "Importance of consistency in career growth",
-
-&#x20; "post\_content": "How can someone consistently improve their professional skills?",
-
-&#x20; "generated\_comment": "For me, the key is shifting from massive sessions to daily micro-habits...",
-
-&#x20; "created\_at": "2026-08-13T07:13:05"
-
-}
-
-13\. Validation Testing
-
-
-
-The API was tested with incomplete requests.
-
-
-
-For example, when post\_content is missing:
-
-
-
-{
-
-&#x20; "platform": "reddit",
-
-&#x20; "post\_title": "UPSC preparation",
-
-&#x20; "community": "UPSC"
-
-}
-
-
-
-FastAPI correctly returns:
-
-
-
-422 Unprocessable Content
-
-
-
-This confirms that required request fields are being validated.
-
-
-
-14\. Error Handling Testing
-
-
-
-The API was also tested with non-existing comment IDs.
-
-
-
-Example:
-
-
-
-GET /comments/9999
-
-
-
-Response:
-
-
-
-{
-
-&#x20; "detail": "Comment not found"
-
-}
-
-
-
-Similarly:
-
-
-
-DELETE /comments/9999
-
-
-
-returns:
-
-
-
-{
-
-&#x20; "detail": "Comment not found"
-
-}
-
-
-
-This confirms that invalid database IDs are handled correctly.
-
-
-
-15\. Platform Testing
-
-
-
-The API has been tested with different platforms.
-
-
-
-Reddit
-
-
-
-Example context:
-
-
+```text
+Platform: Reddit
 
 Community: UPSC
 
+Title:
+How to stay consistent with UPSC preparation?
 
+Content:
+I keep losing motivation while preparing. What should I do?
+```
 
-The generated comment follows a conversational Reddit-style response.
+### Step 2 — Application creates a structured prompt
 
+The application combines the platform, community, title, content, and comment-writing instructions.
 
+### Step 3 — Prompt is sent to Gemini
 
-LinkedIn
+The Gemini API generates a context-aware comment.
 
+### Step 4 — API returns the generated comment
 
+The generated comment is returned in the API response.
 
-Example context:
+### Step 5 — Comment is stored
 
+The generated comment and associated post information are stored in SQLite.
 
+### Step 6 — User can manage stored comments
 
+The user can:
+
+* Retrieve all comments
+* Retrieve an individual comment
+* Delete a comment
+
+---
+
+## 16. Prompt Engineering
+
+The application uses a structured prompt instead of sending only the original post content to the AI model.
+
+The prompt includes:
+
+* Platform
+* Community
+* Post title
+* Post content
+
+The model is also given instructions such as:
+
+* Write one natural comment.
+* Do not sound like an advertisement.
+* Do not mention that the response was generated by AI.
+* Keep the comment relevant to the post.
+* Match the platform's conversational style.
+* Return only the comment.
+
+This approach provides the model with additional context when generating the response.
+
+---
+
+## 17. Database
+
+The project uses SQLite for persistent storage of generated comments.
+
+SQLAlchemy is used as the ORM for interacting with the database.
+
+Each stored comment contains information such as:
+
+* ID
+* Platform
+* Community
+* Post title
+* Post content
+* Generated comment
+* Created time
+
+### Example Database Record
+
+```json
+{
+  "id": 3,
+  "platform": "linkedin",
+  "community": "careers",
+  "post_title": "Importance of consistency in career growth",
+  "post_content": "How can someone consistently improve their professional skills?",
+  "generated_comment": "For me, the key is shifting from massive sessions to daily micro-habits.",
+  "created_at": "2026-08-13T07:13:05"
+}
+```
+
+---
+
+## 18. Validation Testing
+
+The API was tested with an incomplete request.
+
+For example, `post_content` was intentionally omitted:
+
+```json
+{
+  "platform": "reddit",
+  "post_title": "Test post",
+  "community": "UPSC"
+}
+```
+
+The API returned:
+
+```text
+422 Unprocessable Content
+```
+
+Response:
+
+```json
+{
+  "detail": [
+    {
+      "type": "missing",
+      "loc": [
+        "body",
+        "post_content"
+      ],
+      "msg": "Field required"
+    }
+  ]
+}
+```
+
+This confirms that required request fields are validated by FastAPI and Pydantic.
+
+---
+
+## 19. API Testing Results
+
+The implemented API endpoints were tested through FastAPI Swagger UI.
+
+| Test                     | Expected Result | Actual Result |
+| ------------------------ | --------------: | ------------: |
+| POST `/generate-comment` |             200 |           200 |
+| GET `/comments`          |             200 |           200 |
+| GET `/comments/{id}`     |             200 |           200 |
+| DELETE `/comments/{id}`  |             200 |           200 |
+| Missing required field   |             422 |           422 |
+
+The tests confirmed that comment generation, database retrieval, deletion, and request validation are functioning correctly.
+
+---
+
+## 20. Error Handling Testing
+
+The API was also designed to handle requests for comments that do not exist.
+
+### Example
+
+```text
+GET /comments/9999
+```
+
+If the comment does not exist, the API returns:
+
+```json
+{
+  "detail": "Comment not found"
+}
+```
+
+Similarly:
+
+```text
+DELETE /comments/9999
+```
+
+returns:
+
+```json
+{
+  "detail": "Comment not found"
+}
+```
+
+This prevents invalid database operations from being silently accepted.
+
+---
+
+## 21. Platform Testing
+
+The API accepts platform information as part of the request.
+
+### Reddit
+
+Example:
+
+```text
+Platform: reddit
+Community: UPSC
+```
+
+The generated response is instructed to follow a conversational Reddit-style approach.
+
+### LinkedIn
+
+Example:
+
+```text
+Platform: linkedin
 Community: careers
+```
 
+The platform information is provided to the prompt so the generated response can be adapted to the requested professional context.
 
+---
 
-The generated comment is more professional and career-oriented.
+## 22. Current Project Status
 
+The following components have been implemented and tested:
 
+* Python project setup
+* Virtual environment
+* FastAPI
+* Uvicorn
+* Gemini integration
+* Google GenAI SDK
+* Prompt engineering
+* AI comment generation
+* SQLite database
+* SQLAlchemy
+* Comment storage
+* Get all comments
+* Get individual comment
+* Delete comment
+* Request validation
+* Error handling
+* Reddit testing
+* LinkedIn testing
+* Multiple input testing
+* Swagger API documentation
+* OpenAPI documentation
+* API endpoint testing
 
-This demonstrates that the platform information can influence the generated response.
+---
 
-
-
-16\. Current Project Status
-
-
-
-The following major components have been implemented:
-
-
-
-&#x20;Python project setup
-
-&#x20;Virtual environment
-
-&#x20;FastAPI
-
-&#x20;Gemini integration
-
-&#x20;Prompt engineering
-
-&#x20;Comment generation
-
-&#x20;SQLite database
-
-&#x20;SQLAlchemy
-
-&#x20;Save generated comments
-
-&#x20;Get all comments
-
-&#x20;Get individual comment
-
-&#x20;Delete comment
-
-&#x20;Request validation
-
-&#x20;Error handling
-
-&#x20;Reddit testing
-
-&#x20;LinkedIn testing
-
-&#x20;Multiple input testing
-
-&#x20;Swagger API documentation
-
-&#x20;Comprehensive API testing
-
-17\. Future Improvements
-
-
+## 23. Future Improvements
 
 Possible future improvements include:
 
+### Frontend
 
+Create a simple web interface where users can paste a social media post and generate a comment through a graphical interface.
 
-Frontend
+### More Platform Support
 
+Extend the system to support additional social media platforms and platform-specific response styles.
 
+### Multiple Comment Suggestions
 
-Create a simple web interface where users can paste a social media post and click:
+Generate multiple comment options, such as:
 
+1. Professional
+2. Casual
+3. Short
+4. Detailed
 
+### Authentication
 
-Generate Comment
+Add user authentication so each user can maintain a separate comment history.
 
-More Platforms
+### Deployment
 
+Deploy the API to a cloud platform so that it can be accessed remotely.
 
+### Social Media Integration
 
-Support additional platforms such as:
+Integrate with official social media APIs where permitted, allowing generated drafts to be used within supported workflows.
 
+---
 
+## 24. Conclusion
 
-X
+The **AI Comment Generation API** demonstrates how Generative AI can be integrated with a REST API to automate social media comment drafting.
 
-LinkedIn
-
-Reddit
-
-Other social platforms
-
-Multiple Comment Suggestions
-
-
-
-Instead of generating one comment, the system could generate several options:
-
-
-
-1\. Professional
-
-2\. Casual
-
-3\. Short
-
-4\. Detailed
-
-Authentication
-
-
-
-Add user authentication so each user can maintain their own comment history.
-
-
-
-Deployment
-
-
-
-Deploy the API to a cloud platform so it can be accessed remotely.
-
-
-
-Social Media Integration
-
-
-
-In a future version, the application could integrate with official social media APIs where permitted.
-
-
-
-18\. Conclusion
-
-
-
-The AI Comment Generation API demonstrates how Generative AI can be integrated with a REST API to automate social media comment drafting.
-
-
-
-The system accepts contextual information about a social media post, generates a relevant comment using Gemini, returns the result through FastAPI, and stores the generated comment in a SQLite database.
-
-
+The system accepts contextual information about a social media post, generates a relevant comment using Google's Gemini API, returns the generated result through FastAPI, and stores the generated comment in a SQLite database.
 
 The project combines:
 
-
-
+```text
 REST API
-
-\+
-
++
 Generative AI
-
-\+
-
++
 Prompt Engineering
-
-\+
-
++
 Database
-
-\+
-
++
 Validation
-
-\+
-
++
 API Testing
-
-
+```
 
 to create a functional AI-powered comment generation system.
 
+---
 
+## 25. Author
 
+**Shivani Alagesan**
 
+AI Comment Generation API
+Final Year Project
 
-\### After pasting
+GitHub Repository:
 
-
-
-Save it with:
-
-
-
-\*\*Ctrl + S\*\*
-
-
-
-Then close Notepad.
-
-
-
-From your project folder, run:
-
-
-
-```cmd
-
-dir
-
-
-
-You should now see:
-
-
-
-README.md
-
-requirements.txt
-
-app
-
-.venv
-
+https://github.com/shivani-topperify/AI-Comment-Generation-API
