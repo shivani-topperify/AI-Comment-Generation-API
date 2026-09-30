@@ -23,7 +23,11 @@ def generate_comment_endpoint(
             community=request.community
         )
 
+        print("STEP 1: Prompt created")
+
         comment = generate_comment(prompt)
+
+        print("STEP 2: Gemini generated comment")
 
         new_comment = Comment(
             platform=request.platform,
@@ -37,13 +41,18 @@ def generate_comment_endpoint(
         db.commit()
         db.refresh(new_comment)
 
+        print("STEP 3: Comment saved to database")
+
         return {
             "platform": request.platform,
             "comment": comment
         }
 
-    except Exception:
+    except Exception as e:
         db.rollback()
+
+        print("ERROR TYPE:", type(e).__name__)
+        print("ERROR MESSAGE:", str(e))
 
         raise HTTPException(
             status_code=500,
@@ -54,11 +63,19 @@ def generate_comment_endpoint(
 @router.get("/comments")
 def get_comments(db: Session = Depends(get_db)):
     comments = db.query(Comment).all()
-
     return comments
+
+
 @router.get("/comments/{comment_id}")
-def get_comment(comment_id: int, db: Session = Depends(get_db)):
-    comment = db.query(Comment).filter(Comment.id == comment_id).first()
+def get_comment(
+    comment_id: int,
+    db: Session = Depends(get_db)
+):
+    comment = (
+        db.query(Comment)
+        .filter(Comment.id == comment_id)
+        .first()
+    )
 
     if not comment:
         raise HTTPException(
@@ -68,9 +85,17 @@ def get_comment(comment_id: int, db: Session = Depends(get_db)):
 
     return comment
 
+
 @router.delete("/comments/{comment_id}")
-def delete_comment(comment_id: int, db: Session = Depends(get_db)):
-    comment = db.query(Comment).filter(Comment.id == comment_id).first()
+def delete_comment(
+    comment_id: int,
+    db: Session = Depends(get_db)
+):
+    comment = (
+        db.query(Comment)
+        .filter(Comment.id == comment_id)
+        .first()
+    )
 
     if not comment:
         raise HTTPException(

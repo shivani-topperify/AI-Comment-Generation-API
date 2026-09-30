@@ -19,4 +19,7 @@ def generate_comment(prompt: str) -> str:
         contents=prompt
     )
 
-    return response.text
+    if not response.text:
+        raise RuntimeError("Gemini returned an empty response")
+
+    return response.text.strip()
